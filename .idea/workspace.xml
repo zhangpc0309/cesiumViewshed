@@ -39,7 +39,7 @@
             <entry file="file://$PROJECT_DIR$/Apps/ViewshedTest/myViewer.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="386">
-                  <caret line="76" column="13" lean-forward="true" selection-start-line="70" selection-start-column="4" selection-end-line="76" selection-end-column="13" />
+                  <caret line="76" column="13" selection-start-line="70" selection-start-column="4" selection-end-line="76" selection-end-column="13" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                   </folding>
@@ -1113,7 +1113,7 @@
             <entry file="file://$PROJECT_DIR$/Source/Scene/Scene_y.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="-2281">
-                  <caret line="92" column="32" lean-forward="true" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
+                  <caret line="92" column="32" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
                   <folding>
                     <element signature="e#2381#8390#0" />
                     <element signature="e#3994#4079#0" />
@@ -2037,34 +2037,6 @@
               <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
               <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
-              <item name="Apps" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
-              <item name="Apps" type="462c0819:PsiDirectoryNode" />
-              <item name="ViewshedTest" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
-              <item name="Source" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
-              <item name="Source" type="462c0819:PsiDirectoryNode" />
-              <item name="LSSource" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cesium" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cesiumViewshed" type="462c0819:PsiDirectoryNode" />
-              <item name="Source" type="462c0819:PsiDirectoryNode" />
-              <item name="Scene" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -2515,18 +2487,18 @@
       <workItem from="1563754910793" duration="597000" />
       <workItem from="1563841479734" duration="8684000" />
       <workItem from="1563927932033" duration="28954000" />
-      <workItem from="1564014383595" duration="12305000" />
+      <workItem from="1564014383595" duration="12935000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="716124000" />
+    <option name="totallyTimeSpent" value="716754000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.2875354" visible="true" weight="0.1961691" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.2875354" visible="true" weight="0.24636725" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Gulp" order="2" sideWeight="0.7046632" side_tool="true" weight="0.17833553" />
       <window_info id="npm" order="3" sideWeight="0.7124646" side_tool="true" weight="0.1961691" />
@@ -2886,7 +2858,7 @@
     <entry file="file://$PROJECT_DIR$/Source/Scene/Scene_y.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2281">
-          <caret line="92" column="32" lean-forward="true" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
+          <caret line="92" column="32" selection-start-line="92" selection-start-column="32" selection-end-line="92" selection-end-column="32" />
           <folding>
             <element signature="e#2381#8390#0" />
             <element signature="e#3994#4079#0" />
@@ -4688,7 +4660,7 @@
     <entry file="file://$PROJECT_DIR$/Apps/ViewshedTest/myViewer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
-          <caret line="76" column="13" lean-forward="true" selection-start-line="70" selection-start-column="4" selection-end-line="76" selection-end-column="13" />
+          <caret line="76" column="13" selection-start-line="70" selection-start-column="4" selection-end-line="76" selection-end-column="13" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

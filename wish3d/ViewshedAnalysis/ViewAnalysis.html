@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><link rel="shortcut icon" type="image/x-icon" href="favicon.ico?201808241700" media="screen" />
+    <title>三维可视域分析-Wish3D Earth</title>
+</head>
+<link href="styles/bootstrap.min.css?201808241700" type="text/css" rel="stylesheet" />
+<link href="LSGlobe/Apps/SampleCode/templates/bucket.css?201808241700" type="text/css" rel="stylesheet" />
+<link href="styles/examples.css?201808241700" type="text/css" rel="stylesheet" />
+<link href="styles/jquery.mCustomScrollbar.css?201808241700" type="text/css" rel="stylesheet" />
+<script src="script/ExampleCommon.js?201808241700"></script>
+<script type="text/javascript" src="LSGlobe/Apps/SampleCode/Sandcastle-header.js?201808241700"></script>
+<!--<script src="LSGlobe/Build/LSGlobe/LSGlobe.js?201808241700"></script>-->
+<script src="http://earthdata.wish3d.com/example_online/Examples/LSGlobe/Build/LSGlobe/LSGlobe.js?201808241700"></script>
+<body>
+<div class="starshowbox" id="starshowbox">
+    <div class="flagimg pull-left">
+        <a href="http://www.wish3d.com/Wish3DEarth.jsp">
+            <img alt="wish3d" src="images/view-logo.png?201808241700">
+        </a>
+    </div>
+</div>
+<!--分析-->
+<div class="floatScrollBox">
+    <div class="analysis-panel" id="analysis-panel">
+        <div class="analy-header">分析</div>
+        <div class="analy-body">
+            <div class="analy-body-title">三维可视域分析</div>
+            <div class="analy-content">
+                <div class="analy-item active" data-type="1">
+                    <i></i>单个分析
+                </div>
+                <div class="analy-item " data-type="2">
+                    <i></i>联合分析
+                </div>
+            </div>
+
+            <div class="analysisBtn" id="viewAnalysis">创建分析</div>
+            <div class="analysisBtn" id="cancelAnalysis">取消分析</div>
+        </div>
+    </div>
+</div>
+<!--右侧-->
+<div class="switch-box" id="switch-box">
+    <div class="topbar">
+        <div class="bar-item fullscreen" id="fullpage">
+            <i></i>
+        </div>
+        <div class="bar-item home" id="home-switch" onclick="home_click()">
+            <i></i>
+        </div>
+    </div>
+    <div class="bottombar">
+        <div class="bar-item basic-switch" id="basic-switch" data-type="1">
+            <i></i>
+            <span>简介</span>
+        </div>
+
+        <div class="bar-item share-switch" id="btnShareQrc" data-toggle="modal" data-target="#myModal" data-type="4">
+            <i></i>
+            <span>分享</span>
+        </div>
+        <div class="bar-item comment-switch operate-switch" id="operate-switch" data-type="2" data-num="1">
+            <i></i>
+            <span>引导</span>
+        </div>
+    </div>
+</div>
+<div class="comment-container basic-container" id="basic-container">
+    <div class="comment-title clearfix" id="basic-title" data="0">
+        可视域分析
+        <i class="close container-close"></i>
+    </div>
+    <div class="comment-body">
+        <div class="less-info clearfix">
+            <p>
+                基于倾斜摄影的3D可视域分析功能通过绘制的分析视点及范围，可以判断出这片区域哪些地区可通视，哪些区域不可通视。绿色为可视域，红色为不可视域。基于倾斜摄影的可视域分析在不同的领域有着广泛的应用，如火灾监控点的设定，观察哨所的设定等等。军事领域是可视域分析技术应用最广的领域。例如为了设计巡航导弹的航线，就必须对发射点到目标的地形进行分析，包括地形特征优劣分析、对方雷达的通视分析。在图书馆、超市等地点安装监视器时也必须考虑监视器的可视域范围，务必使得安装的监视器可以监视到最大的区域。
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="signmask active" id="mask" style=""></div>
+<div id="lsGlobe" class="fullSize"></div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="height:344px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true"><i class="closemodal"></i></button>
+                <h4 class="modal-title" id="myModalLabel">分享</h4>
+            </div>
+            <div class="modal-body">
+                <div class="share-line clearfix">
+                    <h5 class="col-sm-2">链接地址:</h5>
+                    <div class="input-group col-sm-10">
+                        <input type="text" class="form-control" id="input_dlink">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success" id="copy"
+                                    data-clipboard-action="copy" data-clipboard-target="#input_dlink">复制链接</button>
+                        </div>
+                    </div>
+                </div>
+                <div  class="share-line clearfix">
+                    <h5 class="col-sm-2">分享到:</h5>
+                    <div class="bdsharebuttonbox thirdlogin  col-sm-10" id="thirdlogin" data-tag="share_1" >
+                        <a href="javascript:;" class="weibo bds_tsina" data-cmd="tsina"></a>
+                        <a href="javascript:;" class="qzone bds_tsina" data-cmd="qzone"></a>
+                        <a href="javascript:;" class="wechat bds_weixin hidden" data-cmd="weixin"></a>
+                        <div class="wxbox">
+                            <img alt="作品二维码" id="qrcImg" src="http://pan.baidu.com/share/qrcode?w=150&h=150&url=http://localhost:8080/ditushuo/project.jsp?guid=fa6c0caa-698b-41e8-8715-c5b7a89e61ae">
+                            <div class="wxuse">
+                                "扫一扫"分享到朋友圈
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="float-tip" id="float-tip" style="display: none; left: 267px; top: 287px;">点击绘制3D可视域分析</div>
+<div class="fixedpercent" id="fixedpercent">加载中...</div>
+<script type="text/javascript" src="LSGlobe/script/jquery-1.11.3.min.js?201808241700"></script>
+<script type="text/javascript" src="script/bootstrap.min.js?201808241700"></script>
+<script type="text/javascript" src="LSGlobe/script/LSJHelper.js?201808241700"></script>
+<script src="script/clipboard.min.js?201808241700"></script>
+<script src="script/jquery.mCustomScrollbar.concat.min.js?201808241700"></script>
+
+<script type="text/javascript" id="cesium_sandcastle_script">
+var viewer,scene,canvas,ellipsoid,camera,tileset;
+var viewshed3daction = false;
+var viewshed3ding = false;
+var viewshed3d;
+var p_viewshed3d = undefined;
+//默认主视角
+var defaultHomePos = aDefaultHomePosition.ViewAnalysis;
+function startup(LSGlobe) {
+    'use strict';
+
+    //wish3d:eebcae2c-08a0-4a08-9eb7-7feb70cde253;
+    // locahost:1e5ca44e-dfbf-4f0d-91b3-f318dab12b7c;
+    // suzhou:202178dd-a25f-4d31-a2b6-7f0b0826fc2c;
+    // locaspace:c04c549d-92f7-4ffc-82ca-60bf4b736a7d
+    viewer = new LSGlobe.Viewer('lsGlobe', {
+        baseLayerPicker: false,
+        sceneModePicker: false,
+        fullscreenButton:false,
+        guid:licenseCode,
+        "licenseUrl":licenseUrl
+    });
+    viewer.imageryLayers.removeAll();
+    var google = new LSGlobe.UrlTemplateImageryProvider({
+        url : 'http://mt0.google.cn/vt/lyrs=s&hl=zh-CN&x={x}&y={y}&z={z}',
+        tilingScheme : new LSGlobe.WebMercatorTilingScheme(),
+        maximumLevel : 20
+    });
+    viewer.imageryLayers.addImageryProvider(google);
+
+    viewer.shadows = false;
+    scene = viewer.scene;
+    console.log(scene);
+    canvas = viewer.canvas;
+    console.log(canvas);
+    ellipsoid = viewer.scene.globe.ellipsoid;
+    console.log(ellipsoid);
+    camera = viewer.camera;
+    console.log(camera);
+    //取出版本信息
+    //viewer._cesiumWidget._creditContainer.style.display="none";
+
+    viewer.scene.globe.enableLighting = false;
+    //地形
+    /*  var cesiumTerrainProviderMeshes = new LSGlobe.CesiumTerrainProvider({
+     url: 'http://assets02.agi.com/stk-terrain/v1/tilesets/world/tiles',
+     requestWaterMask: true,
+     requestVertexNormals: true
+     });
+
+     viewer.terrainProvider = cesiumTerrainProviderMeshes; */
+    /***********************加载倾斜模型*****************************/
+
+
+
+    //倾斜模型加载
+    var sTimeSeconds=new Date().getTime();
+    //http://47.93.99.127:8080/weihai/data/398a087e-dcb7-4ce0-892e-9989fed65d22/data/model.json
+    tileset = new LSGlobe.LSPageLOD({
+        url:"http://earthdata.wish3d.com/example_online/Examples/Datas/data/model.json?"+sTimeSeconds,//"http://data1.wish3d.com/pics/31fa4016-9099-4115-84d9-bdba0fe34cce/data/model.json",
+        shadows:LSGlobe.ShadowMode.ENABLED,
+        viewer:viewer
+    });
+    viewer.scene.pageLODLayers.add(tileset);
+    tileset.readyPromise.then(function(pagelod) {
+        setTimeout(function () {
+            viewer.camera.flyTo({
+                destination: LSGlobe.Cartesian3.fromDegrees(pagelod.origin.x, pagelod.origin.y, pagelod.origin.z + 1500),
+                duration: 1,
+                complete: home_click
+            })
+        }, 1500);
+        tileset.progressEvent.addEventListener(onProgressInfo);
+    }).otherwise(function(error){
+        console.error("加载倾斜摄影数据错误");
+    });
+
+
+    var handler = new LSGlobe.ScreenSpaceEventHandler(viewer.scene.canvas);
+//鼠标左击
+    handler.setInputAction(function (movement) {
+
+        // 可视域分析
+        if(viewshed3daction){
+            var cartesian = viewer.scene.pickPosition(movement.position);
+            if(cartesian != undefined && !viewshed3ding){
+                cartesian.z+=0.08;
+                viewshed3d.viewerPosition = cartesian;
+                viewer.scene.primitives.add(viewshed3d);
+
+            }else{
+
+                viewshed3d.setPoseByTargetPoint(cartesian);
+                viewshed3daction=false;
+            }
+            viewshed3ding = true;
+        }
+
+
+
+    }, LSGlobe.ScreenSpaceEventType.LEFT_CLICK);
+
+    handler.setInputAction(function (movement) {
+        if(viewshed3daction&&viewshed3ding){
+            var cartesian = viewer.scene.pickPosition(movement.endPosition);
+            viewshed3d.setPoseByTargetPoint(cartesian);
+        }
+    }, LSGlobe.ScreenSpaceEventType.MOUSE_MOVE);
+
+    Sandcastle.finishedLoading();
+    //加载分析
+    setTimeout(function(){AddAnalysis(1)},3000);
+
+    }
+
+if (typeof LSGlobe !== "undefined") {
+    startup(LSGlobe);
+} else if (typeof require === "function") {
+    require(["LSGlobe"], startup);
+}
+
+/*百度分享*/
+window._bd_share_config = {
+    "common" : {
+        "bdSnsKey" : {},
+        "bdText" : "我正在使用Wish3D展示我的3D作品，欢迎访问",
+        bdUrl : location.href,
+        "bdMini" : "2",
+        "bdMiniList" : false,
+        "bdPic" : "http://wish3d.com/getThumbnail.action?url=images/31fa4016-9099-4115-84d9-bdba0fe34cce.png&outputWidth=300&outputHeight=300&proportion=false?ver=20160727",
+        "bdStyle" : "0",
+        "bdSize" : "32"
+    },
+    "share" : {}
+};
+with (document)
+    0[(getElementsByTagName('head')[0] || body)
+        .appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='
+        + ~(-new Date() / 36e5)];
+
+$(function(){
+    $(".analy-body").mCustomScrollbar();
+    //窗口变化
+    $ (window).resize (function ()
+    {
+        $(".analy-body").mCustomScrollbar("update");
+    });
+    var clip = new Clipboard("#copy");
+    var sShortLink=location.href;
+    $("#input_dlink").val(sShortLink);
+    var qrcode = new QRCode($("#qrcImg").get(0), { text: sShortLink, width: 150, height: 150 });
+
+    //复制
+    $("#copy").click(
+        function() {
+            var _this = $(this);
+            _this.removeClass("btn-success")
+                .addClass("btn-default").html("已复制");
+            setTimeout(function() {
+                _this.removeClass("btn-default").addClass(
+                    "btn-success").html("复制链接");
+            }, 2000);
+        });
+
+    //分析
+    $(".analy-item").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+        clearviewAnalysis1();
+        AddAnalysis($(this).attr("data-type"));
+    });
+
+    //
+    $("#viewAnalysis").click(function(){
+        viewAnalysis();
+        //clearviewAnalysis();// 清空可视域
+
+    });
+    $("#cancelAnalysis").click(function(){
+        clearviewAnalysis();// 清空可视域
+
+    });
+
+    $("canvas").mousemove(function(e){
+        var floatTip=$("#float-tip");
+       if(viewshed3daction){
+            floatTip.html("点击绘制3D可视域分析").css({left:e.clientX+15+"px",top:e.clientY+"px"});
+            floatTip.show();
+        }else{
+            floatTip.hide();
+        }
+    }).click(function(){
+        var floatTip=$("#float-tip");
+        floatTip.hide();
+    });
+    //全屏
+    $("#fullpage").click(function() {
+        if($(this).hasClass("active")){
+            exitFullScreen();
+            //$(this).removeClass("active");
+        }else{
+            requestFullScreen();
+            //$(this).addClass("active");
+        }
+    });
+    //捕捉屏幕
+    document.addEventListener ("fullscreenchange", FShandler);
+    document.addEventListener ("webkitfullscreenchange", FShandler);
+    document.addEventListener ("mozfullscreenchange", FShandler);
+    document.addEventListener ("MSFullscreenChange", FShandler);
+    //简介
+    $("#basic-switch").click(function(){
+        $(this).siblings().removeClass("active");
+        MaskWin($(this).attr("data-type"));
+
+    });
+    //关闭窗口
+    $(".container-close").click(function(){
+        var _this=$(this);
+        var parentId=_this.parents(".comment-container").attr("id");
+        _this.parents(".comment-container").fadeOut();
+        $("#mask").fadeOut(300);
+        if(parentId=="comment-container"){
+            $("#comment-switch").removeClass("active");
+        }else{
+            if(parentId=="basic-container"){
+                $("#basic-switch").removeClass("active");
+            }
+        }
+
+        return false;
+    });
+    $("#operate-switch").click(function(){
+        $("#mask").addClass("active").show();
+        $("#starshowbox,#analysis-panel,#switch-box,#timeGet").hide();
+    });
+    var maskTimer=setTimeout(function(){MaskWin("all")},3000);
+    $("#mask").click(function(){
+        clearTimeout(maskTimer);
+        MaskWin("all");
+    });
+
+
+
+});
+//分析数组
+var aViewshed3d=[];
+//默认分析
+var aViewshed3d1=[];
+function AddAnalysis(type) {
+
+    if(type=="1"){
+        var viewshed3d= new LSGlobe.LSViewshed3D(viewer);
+        aViewshed3d1.push(viewshed3d);
+        viewshed3d.viewerPosition = {
+            x: -2760904.64933817,
+            y: 4702653.545599646,
+            z: 3296997.379249362
+        };
+        viewer.scene.primitives.add(viewshed3d);
+        
+        viewshed3d.setPoseByTargetPoint({
+            x: -2760928.4290356967,
+            y: 4702648.578513028,
+            z: 3296948.446013283
+        });
+        var oAnalyPos = {
+            "position": {x: -2760891.8061924158, y: 4702725.932935983, z: 3296960.3970659007},
+            "up": {x: -0.6620328229522138, y: 0.3448428728064193, z: 0.6654291355272464},
+            "direction": {x: -0.32949338250321675, y: -0.9313729148722554, z: 0.1548502642198178}
+        };
+        flyToViewPoint(oAnalyPos.position,oAnalyPos.direction,oAnalyPos.up);
+    }else{
+        var viewshed3d= new LSGlobe.LSViewshed3D(viewer);
+        aViewshed3d1.push(viewshed3d);
+        viewshed3d.viewerPosition = {
+            x: -2760904.64933817,
+            y: 4702653.545599646,
+            z: 3296997.379249362
+        };
+        viewer.scene.primitives.add(viewshed3d);
+
+        viewshed3d.setPoseByTargetPoint({
+            x: -2760928.4290356967,
+            y: 4702648.578513028,
+            z: 3296948.446013283
+        });
+
+        var viewshed3d1= new LSGlobe.LSViewshed3D(viewer);
+        aViewshed3d1.push(viewshed3d1);
+        viewshed3d.attachViewshed(viewshed3d1);
+        viewshed3d1.viewerPosition = {
+            x: -2760940.264064152,
+            y: 4702642.485650311,
+            z: 3296964.7421643375
+        };
+
+        viewer.scene.primitives.add(viewshed3d1);
+
+        viewshed3d1.setPoseByTargetPoint({
+            x: -2760899.085916036,
+            y: 4702637.411134548,
+            z: 3296988.583795315
+        });
+
+        var oAnalyPos = {
+            "position": {x: -2760891.8061924158, y: 4702725.932935983, z: 3296960.3970659007},
+            "up": {x: -0.6620328229522138, y: 0.3448428728064193, z: 0.6654291355272464},
+            "direction": {x: -0.32949338250321675, y: -0.9313729148722554, z: 0.1548502642198178}
+        };
+        flyToViewPoint(oAnalyPos.position,oAnalyPos.direction,oAnalyPos.up);
+    }
+}
+
+function clearviewAnalysis(){
+    for(var i=0;i<aViewshed3d.length;i++){
+        try{
+            viewer.scene.primitives.remove(aViewshed3d[i]);
+        }catch(e){}
+    }
+    p_viewshed3d = undefined;
+    aViewshed3d=[];
+}
+//默认的分析清
+function clearviewAnalysis1(){
+    for(var i=0;i<aViewshed3d1.length;i++){
+        try{
+            viewer.scene.primitives.remove(aViewshed3d1[i]);
+        }catch(e){}
+    }
+    aViewshed3d1=[];
+}
+
+// 可视域分析事件
+function viewAnalysis() {
+    /*if(!viewAnalysisDataSource){
+     var promise = viewer.dataSources.add(new LSGlobe.GeoJsonDataSource("viewAnalysisDataSource"));
+     promise.then(function(dataSource) {
+     viewAnalysisDataSource = dataSource;
+     }).otherwise(function(error){
+
+     });
+     }
+     targetDataSource = viewAnalysisDataSource;*/
+    viewshed3d= new LSGlobe.LSViewshed3D(viewer);
+    //p_viewshed3d._childViewsheds.push(viewshed3d);
+    //viewshed3d._parentViewshed = p_viewshed3d;
+    //p_viewshed3d.attachViewshed(viewshed3d);
+
+    if(p_viewshed3d){
+        p_viewshed3d.attachViewshed(viewshed3d);
+    }else{
+        p_viewshed3d = viewshed3d;
+    }
+
+    aViewshed3d.push(viewshed3d);
+    viewshed3daction = true;
+    viewshed3ding=false;
+}
+/*-主视角-*/
+function home_click() {
+    flyToViewPoint(defaultHomePos.position,defaultHomePos.direction,defaultHomePos.up);
+}
+//根据类型代开窗口
+function MaskWin(type){
+
+    if(type=="all"){
+        //所有都隐藏
+        $("#mask").removeClass("active").fadeOut();
+        $("#basic-container").fadeOut();
+        $("#starshowbox,#analysis-panel,#switch-box,#timeGet").show();
+    }else{
+        if(type=="1"){
+            //基本信息
+            $("#mask").show();
+            $("#basic-container").show();
+            if($("#basic-container").get(0).offsetHeight%2!=0){
+                $("#basic-container").height($("#basic-container").height()+1);
+            };
+
+        }else if(type=="2"){
+            $("#mask").fadeIn();
+            $("#comment-container").fadeIn();
+            //评论
+        }else if(type=="3"){
+            //嵌入
+        }else if(type=="4"){
+            //分享
+        }
+    }
+}
+
+/**************************/
+function requestFullScreen() {
+    var element = document.getElementsByTagName("body")[0];
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+    if (requestMethod) {
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+function exitFullScreen() {
+    var el = document;
+    var cfs = el.cancelFullScreen || el.webkitCancelFullScreen ||
+        el.mozCancelFullScreen || el.exitFullScreen;
+    if(typeof cfs != "undefined" && cfs) {
+        cfs.call(el);
+    } else if(typeof window.ActiveXObject != "undefined") {
+        //for IE，这里和fullScreen相同，模拟按下F11键退出全屏
+        var wscript = new ActiveXObject("WScript.Shell");
+        if(wscript != null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+//捕捉屏幕变化
+function FShandler ()
+{
+    if ($("#fullpage").hasClass("active"))
+    {
+        exitFullScreen();
+        $("#fullpage").removeClass("active")
+    }else{
+        requestFullScreen();
+        $("#fullpage").addClass("active")
+    }
+}
+
+</script>
+</body>
+</html>
