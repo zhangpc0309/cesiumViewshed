@@ -39,7 +39,7 @@
     "cloc": "^2.3.3",
     "compressible": "^2.0.9",
     "compression": "^1.6.2",
-    "electron": "^1.6.1",
+    "electron": "^15.5.5",
     "eslint": "^4.0.0",
     "eslint-plugin-html": "^3.0.0",
     "event-stream": "^3.3.4",
